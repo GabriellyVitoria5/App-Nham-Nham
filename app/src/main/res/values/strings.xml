@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">NhamNham</string>
+    <string name="titulo">Nham Nham</string>
+    <string name="partida">Iniciar Partida</string>
+    <string name="regras_do_jogo">Regras do Jogo</string>
+    <string name="voltar">Voltar</string>
+    <string name="resultado">Resultado</string>
+    <string name="reiniciar">Reiniciar Partida</string>
+    <string name="regras">Regras do Nham Nham</string>
+    <string name="voltar_tela_inicial">Voltar à tela inicial</string>
+    <string name="regra1_titulo">1. Objetivo do jogo:</string>
+    <string name="regra2_titulo">2. Preparação:</string>
+    <string name="regra3_titulo">3. Dinâmica do Jogo:</string>
+    <string name="regra4_titulo">4. Restrições:</string>
+    <string name="regra5_titulo">5. Condições de Vitória:</string>
+    <string name="regra6_titulo">6. Estratégia:</string>
+    <string name="regra1_conteudo">O objetivo é alinhar três peças do mesmo jogador em sequência na horizontal, vertical ou diagonal.</string>
+    <string name="regra2_conteudo">O jogo é para dois jogadores, alternando turnos no mesmo dispositivo. Cada jogador possui três peças de tamanhos diferentes: pequeno, médio e grande.</string>
+    <string name="regra3_conteudo">Cada jogador posiciona uma peça em uma célula vazia ou sobre outra menor, buscando alinhar três peças do mesmo jogador.</string>
+    <string name="regra4_conteudo">Não é permitido posicionar uma peça menor ou do mesmo tamanho sobre outra peça.</string>
+    <string name="regra5_conteudo">Vence quem alinhar três peças em sequência. Caso todas as células sejam preenchidas sem um vencedor, o jogo termina em empate.</string>
+    <string name="regra6_conteudo">Pense estrategicamente para bloquear o adversário e aproveite a possibilidade de sobrepor peças maiores sobre as menores.</string>
+</resources>
