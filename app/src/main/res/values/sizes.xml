@@ -3,4 +3,5 @@
     <dimen name="font_pequena">20sp</dimen>
     <dimen name="font_normal">30sp</dimen>
     <dimen name="font_large">60sp</dimen>
+    <dimen name="bordas_laterais">20dp</dimen>
 </resources>
