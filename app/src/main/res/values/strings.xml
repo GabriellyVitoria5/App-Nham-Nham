@@ -20,4 +20,20 @@
     <string name="regra4_conteudo">Não é permitido posicionar uma peça menor ou do mesmo tamanho sobre outra peça.</string>
     <string name="regra5_conteudo">Vence quem alinhar três peças em sequência. Caso todas as células sejam preenchidas sem um vencedor, o jogo termina em empate.</string>
     <string name="regra6_conteudo">Pense estrategicamente para bloquear o adversário e aproveite a possibilidade de sobrepor peças maiores sobre as menores.</string>
+    <string name="desc_img_grid">Imagem das linhas verticais e horizontais de um jogo da velha</string>
+    <string name="desc_img_peca_p1">Peça pequena do jogador 1</string>
+    <string name="desc_img_peca_m1">Peça média do jogador 1</string>
+    <string name="desc_img_peca_g1">Peça grande do jogador 1</string>
+    <string name="desc_img_peca_p2">Peça pequena do jogador 2</string>
+    <string name="desc_img_peca_m2">Peça média do jogador 2</string>
+    <string name="desc_img_peca_g2">Peça grande do jogador 2</string>
+    <string name="desc_img_bloco1">Bloco 1, linha 1 e coluna 1, do jogo da velha</string>
+    <string name="desc_img_bloco2">Bloco 2, linha 1 e coluna 2, do jogo da velha</string>
+    <string name="desc_img_bloco3">Bloco 3, linha 1 e coluna 1, do jogo da velha</string>
+    <string name="desc_img_bloco4">Bloco 4, linha 2 e coluna 1, do jogo da velha</string>
+    <string name="desc_img_bloco5">Bloco 5, linha 2 e coluna 2, do jogo da velha</string>
+    <string name="desc_img_bloco6">Bloco 6, linha 2 e coluna 3, do jogo da velha</string>
+    <string name="desc_img_bloco7">Bloco 7, linha 3 e coluna 1, do jogo da velha</string>
+    <string name="desc_img_bloco8">Bloco 8, linha 3 e coluna 2, do jogo da velha</string>
+    <string name="desc_img_bloco9">Bloco 9, linha 3 e coluna 3, do jogo da velha</string>
 </resources>

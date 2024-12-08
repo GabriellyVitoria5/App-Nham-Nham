@@ -12,7 +12,8 @@
         android:id="@+id/jogador1_peca_pequena"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="@mipmap/ic_launcher"
+        android:background="@mipmap/p1"
+        android:contentDescription="@string/desc_img_peca_p1"
         android:layout_marginTop="@dimen/borda_20"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +26,8 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="@dimen/borda_20"
-        android:background="@mipmap/ic_launcher"
+        android:background="@mipmap/m1"
+        android:contentDescription="@string/desc_img_peca_m1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/jogador1_peca_pequena"
         app:layout_constraintEnd_toStartOf="@id/jogador1_peca_grande"
@@ -36,7 +38,8 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="@dimen/borda_20"
-        android:background="@mipmap/ic_launcher"
+        android:background="@mipmap/g1"
+        android:contentDescription="@string/desc_img_peca_g1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/jogador1_peca_media"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,6 +51,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/grid"
+        android:contentDescription="@string/desc_img_grid"
         android:layout_marginStart="@dimen/borda_20"
         android:layout_marginEnd="@dimen/borda_20"
         app:layout_constraintTop_toTopOf="@id/linhas_jogo"
@@ -81,13 +85,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:padding="20sp" />
+                android:padding="20sp"
+                android:contentDescription="@string/desc_img_bloco1" />
 
             <ImageView
                 android:id="@+id/bloco2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:contentDescription="@string/desc_img_bloco2" />
 
             <ImageView
                 android:id="@+id/bloco3"
@@ -95,7 +101,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:padding="20sp"
-                />
+                android:contentDescription="@string/desc_img_bloco3" />
 
         </LinearLayout>
 
@@ -112,21 +118,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:padding="20sp" />
+                android:padding="20sp"
+                android:contentDescription="@string/desc_img_bloco4" />
 
             <ImageView
                 android:id="@+id/bloco5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:padding="20sp" />
+                android:padding="20sp"
+                android:contentDescription="@string/desc_img_bloco5" />
 
             <ImageView
                 android:id="@+id/bloco6"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:padding="20sp" />
+                android:padding="20sp"
+                android:contentDescription="@string/desc_img_bloco6" />
 
         </LinearLayout>
 
@@ -143,21 +152,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:padding="20sp" />
+                android:padding="20sp"
+                android:contentDescription="@string/desc_img_bloco7" />
 
             <ImageView
                 android:id="@+id/bloco8"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:padding="20sp" />
+                android:padding="20sp"
+                android:contentDescription="@string/desc_img_bloco8" />
 
             <ImageView
                 android:id="@+id/bloco9"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:padding="20sp" />
+                android:padding="20sp"
+                android:contentDescription="@string/desc_img_bloco9" />
         </LinearLayout>
 
     </LinearLayout>
@@ -168,7 +180,8 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="@dimen/borda_20"
-        android:background="@mipmap/ic_launcher"
+        android:background="@mipmap/p2"
+        android:contentDescription="@string/desc_img_peca_p2"
         app:layout_constraintTop_toBottomOf="@id/linhas_jogo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/jogador2_peca_media"
@@ -180,7 +193,8 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="@dimen/borda_20"
-        android:background="@mipmap/ic_launcher"
+        android:background="@mipmap/m2"
+        android:contentDescription="@string/desc_img_peca_m2"
         app:layout_constraintTop_toBottomOf="@id/linhas_jogo"
         app:layout_constraintStart_toEndOf="@id/jogador2_peca_pequena"
         app:layout_constraintEnd_toStartOf="@id/jogador2_peca_grande"
@@ -191,7 +205,8 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="@dimen/borda_20"
-        android:background="@mipmap/ic_launcher"
+        android:background="@mipmap/g2"
+        android:contentDescription="@string/desc_img_peca_g2"
         app:layout_constraintTop_toBottomOf="@id/linhas_jogo"
         app:layout_constraintStart_toEndOf="@id/jogador2_peca_media"
         app:layout_constraintEnd_toEndOf="parent"
@@ -203,6 +218,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/voltar"
+        android:textSize="@dimen/font_pequena"
         app:cornerRadius="0dp"
         android:paddingStart="50dp"
         android:paddingEnd="50dp"
@@ -220,6 +236,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/resultado"
+        android:textSize="@dimen/font_pequena"
         app:cornerRadius="0dp"
         android:paddingStart="50dp"
         android:paddingEnd="50dp"
