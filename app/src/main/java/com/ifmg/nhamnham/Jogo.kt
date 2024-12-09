@@ -1,10 +1,12 @@
 package com.ifmg.nhamnham
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.DragEvent
 import android.view.MotionEvent
 import android.view.View
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -14,8 +16,8 @@ import com.ifmg.nhamnham.databinding.ActivityJogoBinding
 class Jogo : AppCompatActivity() {
 
     private lateinit var binding: ActivityJogoBinding
-    private var isImageDropped = false // Para bloquear novos arrastos após o drop
 
+    @SuppressLint("ClickableViewAccessibility") // TODO Configurar o listener de arrastar as peças para um método separado
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,19 +32,21 @@ class Jogo : AppCompatActivity() {
             insets
         }
 
-        // Armazenando peças do jogador 1
-        val pecasJogador1 = listOf(
+        // Lista com as 9 peças de cada jogador, cada imagem no layout se tornará 3 peças de cada tamanho
+        val pecasJogador1 = criarPecas(
             binding.jogador1PecaPequena,
             binding.jogador1PecaMedia,
             binding.jogador1PecaGrande
         )
-
-        // Armazenando peças do jogador 2
-        val pecasJogador2 = listOf(
+        val pecasJogador2 = criarPecas(
             binding.jogador2PecaPequena,
             binding.jogador2PecaMedia,
             binding.jogador2PecaGrande
         )
+
+        // Instanciando 2 jogadores para jogar o jogo
+        val jogador1 = Jogador(true, pecasJogador1)
+        val jogador2 = Jogador(false, pecasJogador2)
 
         // Armazenando os 9 espaços possíveis para colocar as peças
         val blocos = listOf(
@@ -57,77 +61,43 @@ class Jogo : AppCompatActivity() {
             binding.bloco9,
         )
 
-        // Aplicar o OnTouchListener para arrastar as peças do jogador 1
-        pecasJogador1.forEach { peca ->
-            peca.setOnTouchListener { view, motionEvent ->
-                when (motionEvent.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        val shadow = View.DragShadowBuilder(view)
-                        view.startDragAndDrop(null, shadow, view, 0)
-                        true
-                    }
-                    else -> false
+        // Configurando o listener para todas as peças
+        (pecasJogador1 + pecasJogador2).forEach { peca ->
+            peca.imagem.setOnTouchListener { view, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    val dragShadowBuilder = View.DragShadowBuilder(view)
+                    view.startDragAndDrop(null, dragShadowBuilder, peca, 0) // Passa a peça como dado local
+                    true
+                } else {
+                    false
                 }
             }
         }
 
-        // Aplicar o OnTouchListener para arrastar as peças do jogador 2
-        pecasJogador2.forEach { peca ->
-            peca.setOnTouchListener { view, motionEvent ->
-                when (motionEvent.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        val shadow = View.DragShadowBuilder(view)
-                        view.startDragAndDrop(null, shadow, view, 0)
-                        true
-                    }
-                    else -> false
-                }
-            }
-        }
-
-        // TODO bloquear uma peça depois que posicionar em um blobo
-        // Configurar cada bloco como área de drop
+        // TODO arrumar bug visual em que a imagem da peça fica pequena
+        // Configurando o listener de arraste para todos os blocos
         blocos.forEach { bloco ->
-            bloco.setOnDragListener { _, event ->
+            bloco.setOnDragListener { view, event ->
                 when (event.action) {
-                    DragEvent.ACTION_DRAG_STARTED -> {
-                        true // Indica que aceita o arrasto
-                    }
+                    DragEvent.ACTION_DRAG_STARTED -> true
                     DragEvent.ACTION_DROP -> {
-                            val droppedView = event.localState as View
+                        val peca = event.localState as Peca
 
-                            // Obter as dimensões e a posição do bloco (área de soltar)
-                            val dropAreaLocation = IntArray(2)
-                            bloco.getLocationOnScreen(dropAreaLocation)
+                        if (peca.quantidade > 0) {
+                            // Atualiza o fundo do bloco com a imagem da peça arrastada
+                            (view as ImageView).setImageDrawable(peca.imagem.background)
 
-                            val dropAreaWidth = bloco.width
-                            val dropAreaHeight = bloco.height
+                            // Decrementa a quantidade da peça
+                            peca.quantidade -= 1
 
-                            // Calcular o centro do bloco
-                            val centerX = dropAreaLocation[0] + dropAreaWidth / 2
-                            val centerY = dropAreaLocation[1] + dropAreaHeight / 2
-
-                            // Obter a posição global do layout pai do droppedView
-                            val parentLocation = IntArray(2)
-                            (droppedView.parent as View).getLocationOnScreen(parentLocation)
-
-                            // Ajustar as coordenadas relativas ao layout pai do droppedView
-                            val newX = centerX - parentLocation[0] - droppedView.width / 2
-                            val newY = centerY - parentLocation[1] - droppedView.height / 2
-
-                            // Atualizar a posição da peça arrastada
-                            droppedView.x = newX.toFloat()
-                            droppedView.y = newY.toFloat()
-                            droppedView.visibility = View.VISIBLE
-
-                            // Bloquear novos arrastos
-                            isImageDropped = true
-
+                            // Remove a imagem da peça se a quantidade chegar a 0
+                            if (peca.quantidade == 0) {
+                                peca.imagem.visibility = View.INVISIBLE
+                            }
+                        }
                         true
                     }
                     DragEvent.ACTION_DRAG_ENDED -> {
-                        val draggedView = event.localState as View
-                        draggedView.visibility = View.VISIBLE
                         true
                     }
                     else -> false
@@ -135,13 +105,29 @@ class Jogo : AppCompatActivity() {
             }
         }
 
-        // Configurar botão para mover para activity Main
+        configurarBotaoVoltar()
+        configurarBotaoResultado()
+    }
+
+    // Criar uma lista com as 9 peças de um jogador: 3 pequenas, 3 médias e 3 grandes
+    fun criarPecas(pecaPequena: ImageView, pecaMedia: ImageView, pecaGrande: ImageView) : List<Peca>{
+        return listOf(
+            Peca(0, 3, pecaPequena),
+            Peca(1, 3, pecaMedia),
+            Peca(2, 3, pecaGrande)
+        )
+    }
+
+    // Configurar botão para mover para activity Main
+    private fun configurarBotaoVoltar(){
         binding.btnJogoVoltarInicio.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+    }
 
-        // Configurar botão para mover para activity de Resultado
+    // Configurar botão para mover para activity de Resultado
+    private fun configurarBotaoResultado(){
         binding.btnResultado.setOnClickListener {
             val intent = Intent(this, Resultado::class.java)
             startActivity(intent)

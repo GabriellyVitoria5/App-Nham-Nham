@@ -60,7 +60,7 @@
         app:layout_constraintStart_toStartOf="parent"
         />
 
-    <!-- Jogo -->
+    <!-- Linhas do jogo -->
     <LinearLayout
         android:id="@+id/linhas_jogo"
         android:layout_width="0dp"
@@ -71,7 +71,7 @@
         app:layout_constraintStart_toStartOf="@id/img_grid"
         app:layout_constraintTop_toBottomOf="@id/jogador1_peca_pequena" >
 
-        <!-- Linha -->
+        <!-- Linha 1 -->
         <LinearLayout
             android:id="@+id/linha1"
             android:layout_width="match_parent"
@@ -79,7 +79,7 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <!--images of the grid boxes-->
+            <!-- 3 posições da linha 1 -->
             <ImageView
                 android:id="@+id/bloco1"
                 android:layout_width="match_parent"
@@ -93,6 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:padding="20sp"
                 android:contentDescription="@string/desc_img_bloco2" />
 
             <ImageView
@@ -113,6 +114,7 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
+            <!-- 3 posições da linha 2 -->
             <ImageView
                 android:id="@+id/bloco4"
                 android:layout_width="match_parent"
@@ -147,6 +149,7 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
+            <!-- 3 posições da linha 3 -->
             <ImageView
                 android:id="@+id/bloco7"
                 android:layout_width="match_parent"
@@ -213,6 +216,7 @@
         />
 
 
+    <!-- Botão para voltar à tela inicial -->
     <Button
         android:id="@+id/btn_jogo_voltar_inicio"
         android:layout_width="wrap_content"
@@ -231,6 +235,7 @@
         app:layout_constraintHorizontal_chainStyle="spread"
         />
 
+    <!-- Botão de resultado fica oculto até a partida terminar -->
     <Button
         android:id="@+id/btn_resultado"
         android:layout_width="wrap_content"
