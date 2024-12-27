@@ -171,6 +171,9 @@ class Jogo : AppCompatActivity() {
                             bloco.tamanhoAtual = peca.tamanho
                             bloco.peca = peca
                             controleVezJogador = !controleVezJogador
+
+                            // Atualiza os contadores
+                            atualizarContadores(jogador1, jogador2)
                         }
                         else {
                             // Feedback visual ou sonoro para peça inválida
@@ -214,5 +217,21 @@ class Jogo : AppCompatActivity() {
             val intent = Intent(this, Resultado::class.java)
             startActivity(intent)
         }
+    }
+
+    // Atualiza os contadores de peças restantes de cada jogador
+    fun atualizarContadores(jogador1: Jogador, jogador2: Jogador) {
+        val pecasRestantesJ1 = jogador1.pecas.groupBy { it.tamanho }.mapValues { entry ->
+            entry.value.sumOf { it.quantidade }
+        }
+        val pecasRestantesJ2 = jogador2.pecas.groupBy { it.tamanho }.mapValues { entry ->
+            entry.value.sumOf { it.quantidade }
+        }
+
+        val textoJ1 = "Jogador 1: P=${pecasRestantesJ1[0] ?: 0} M=${pecasRestantesJ1[1] ?: 0} G=${pecasRestantesJ1[2] ?: 0}"
+        val textoJ2 = "Jogador 2: P=${pecasRestantesJ2[0] ?: 0} M=${pecasRestantesJ2[1] ?: 0} G=${pecasRestantesJ2[2] ?: 0}"
+
+        binding.contadorPecasJogador1.text = textoJ1
+        binding.contadorPecasJogador2.text = textoJ2
     }
 }
