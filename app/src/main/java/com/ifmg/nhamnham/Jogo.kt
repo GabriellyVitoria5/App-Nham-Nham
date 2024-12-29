@@ -19,6 +19,7 @@ class Jogo : AppCompatActivity() {
 
     private lateinit var binding: ActivityJogoBinding
     private var controleVezJogador:Boolean = true
+    private var jogoContinua:Boolean = true
 
     @SuppressLint("ClickableViewAccessibility") // TODO Configurar o listener de arrastar as peças para um método separado
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +55,7 @@ class Jogo : AppCompatActivity() {
         val jogador2 = Jogador(pecasJogador2,false)
 
         // Armazenando os 9 espaços possíveis para colocar as peças
-        val blocos = listOf(
+        val blocos = arrayOf(
             Bloco(binding.bloco1),
             Bloco(binding.bloco2),
             Bloco(binding.bloco3),
@@ -69,6 +70,13 @@ class Jogo : AppCompatActivity() {
         // Configurando o listener para as peças do joador 1
         pecasJogador1.forEach { peca ->
             peca.imagem.setOnTouchListener { view, event ->
+
+                if (!jogoContinua) {
+                    // Bloqueia o arrasto se o jogo acabou
+                    Toast.makeText(this, "O jogo terminou!", Toast.LENGTH_SHORT).show()
+                    return@setOnTouchListener false
+                }
+
                 if (event.action == MotionEvent.ACTION_DOWN && controleVezJogador == jogador1.vezDeJogar) {
                     val dragShadowBuilder = View.DragShadowBuilder(view)
                     view.startDragAndDrop(null, dragShadowBuilder, peca, 0) // Passa a peça como dado local
@@ -82,6 +90,13 @@ class Jogo : AppCompatActivity() {
         // Configurando o listener para as peças do joador 2
         pecasJogador2.forEach { peca ->
             peca.imagem.setOnTouchListener { view, event ->
+
+                if (!jogoContinua) {
+                    // Bloqueia o arrasto se o jogo acabou
+                    Toast.makeText(this, "O jogo terminou!", Toast.LENGTH_SHORT).show()
+                    return@setOnTouchListener false
+                }
+
                 if (event.action == MotionEvent.ACTION_DOWN && controleVezJogador == jogador2.vezDeJogar) {
                     val dragShadowBuilder = View.DragShadowBuilder(view)
                     view.startDragAndDrop(null, dragShadowBuilder, peca, 0) // Passa a peça como dado local
@@ -113,10 +128,20 @@ class Jogo : AppCompatActivity() {
 
                             bloco.tamanhoAtual = peca.tamanho
                             bloco.peca = peca
+
                             controleVezJogador = !controleVezJogador
 
                             // Atualiza os contadores
                             atualizarContadores(jogador1, jogador2)
+
+                            // Verificar se um jogador ganhou
+                            val vencedor = temVencedor(blocos)
+                            if(vencedor){
+                                jogoContinua = false
+                                val jogador = if (peca.jogador) "Jogador 1" else "Jogador 2"
+                                Toast.makeText(this, "$jogador ganhou!", Toast.LENGTH_SHORT).show()
+                            }
+
                         }
                         else {
                             // Feedback visual ou sonoro para peça inválida
@@ -141,7 +166,7 @@ class Jogo : AppCompatActivity() {
     }
 
     // Criar uma lista com as 9 peças de um jogador: 3 pequenas, 3 médias e 3 grandes
-    fun criarPecas(pecaPequena: ImageView, pecaMedia: ImageView, pecaGrande: ImageView, donoDaPeca: Boolean) : List<Peca>{
+    private fun criarPecas(pecaPequena: ImageView, pecaMedia: ImageView, pecaGrande: ImageView, donoDaPeca: Boolean) : List<Peca>{
         return listOf(
             Peca(0, 3, pecaPequena, donoDaPeca),
             Peca(1, 3, pecaMedia, donoDaPeca),
@@ -166,7 +191,7 @@ class Jogo : AppCompatActivity() {
     }
 
     // Atualiza os contadores de peças restantes de cada jogador
-    fun atualizarContadores(jogador1: Jogador, jogador2: Jogador) {
+    private fun atualizarContadores(jogador1: Jogador, jogador2: Jogador) {
         val pecasRestantesJ1 = jogador1.pecas.groupBy { it.tamanho }.mapValues { entry ->
             entry.value.sumOf { it.quantidade }
         }
@@ -182,13 +207,49 @@ class Jogo : AppCompatActivity() {
     }
 
     // Indicar na tela qual jogador deve jogar a próxima peça
-    fun mostrarVezJogador(controleVezJogador: Boolean){
-        val jogadorAtual = if (controleVezJogador){
-            "Jogador 1"
+    private fun mostrarVezJogador(controleVezJogador: Boolean){
+        if (jogoContinua) {
+            val jogadorAtual = if (controleVezJogador) {
+                "Jogador 1"
+            } else {
+                "Jogador 2"
+            }
+            Toast.makeText(this, "Vez de $jogadorAtual", Toast.LENGTH_SHORT).show()
         }
-        else{
-            "Jogador 2"
+    }
+
+    // Verificar se há um vencedor de acordo com as condições de vitória do jogo da velha
+    private fun temVencedor(blocos: Array<Bloco>): Boolean {
+
+        // Posições vencedoras em um array 2D
+        val combinacoesVencedoras  = arrayOf(
+            arrayOf(0, 1, 2), // Linha 1
+            arrayOf(3, 4, 5), // Linha 2
+            arrayOf(6, 7, 8), // Linha 3
+            arrayOf(0, 3, 6), // Coluna 1
+            arrayOf(1, 4, 7), // Coluna 2
+            arrayOf(2, 5, 8), // Coluna 3
+            arrayOf(0, 4, 8), // Diagonal principal
+            arrayOf(2, 4, 6)  // Diagonal secundária
+        )
+
+        for (combinacao in combinacoesVencedoras) {
+            val (a, b, c) = combinacao
+            if (
+                // Verifica se os blocos não estão vazios
+                blocos[a].tamanhoAtual != -1 &&
+                blocos[b].tamanhoAtual != -1 &&
+                blocos[c].tamanhoAtual != -1 &&
+
+                // Verifica se as peças pertencem ao mesmo jogador
+                blocos[a].peca.jogador == blocos[b].peca.jogador &&
+                blocos[a].peca.jogador == blocos[c].peca.jogador
+            ) {
+                jogoContinua = false // Impedir que as peças sejam colocadas no tabuleiro
+                return true // Há um vencedor
+            }
         }
-        Toast.makeText(this, "Vez de ${jogadorAtual}", Toast.LENGTH_SHORT).show()
+
+        return false // Sem vencedor
     }
 }
