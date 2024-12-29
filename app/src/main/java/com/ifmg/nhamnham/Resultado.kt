@@ -34,8 +34,12 @@ class Resultado : AppCompatActivity() {
         val placarJogador1 = intent.getIntExtra("placarJogador1", 0)
         val placarJogador2 = intent.getIntExtra("placarJogador2", 0)
 
-        // Exibe o resultado no formato desejado
-        binding.txtResultado.text = "$resultadoDoJogo ganhou! 🥳"
+        // Exibe o resultado
+        if (resultadoDoJogo == "Empate") {
+            binding.txtResultado.text = "Empate! ☹️"
+        } else {
+            binding.txtResultado.text = "$resultadoDoJogo ganhou! 🥳"
+        }
 
         // Atualiza o placar
         binding.txtPlacar.text = "Placar: $placarJogador1 x $placarJogador2"
