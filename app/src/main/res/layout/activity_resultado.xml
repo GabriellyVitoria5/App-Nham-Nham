@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".Resultado">
 
+    <!-- Título que ficará fixo -->
     <TextView
         android:id="@+id/txt_titulo_resultado"
         android:layout_width="wrap_content"
@@ -19,6 +20,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
 
+    <!-- TextView para o resultado do jogo -->
+    <TextView
+        android:id="@+id/txt_resultado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintTop_toBottomOf="@id/txt_titulo_resultado"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/resultado" />
+
+    <!-- TextView para o placar -->
+    <TextView
+        android:id="@+id/txt_placar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:layout_marginTop="30dp"
+        android:text="@string/placar"
+        app:layout_constraintTop_toBottomOf="@id/txt_resultado"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Botões para reiniciar ou voltar -->
     <Button
         android:id="@+id/btn_reiniciar"
         android:layout_width="wrap_content"
@@ -30,7 +57,7 @@
         android:paddingEnd="30dp"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
-        app:layout_constraintTop_toTopOf="@id/txt_titulo_resultado"
+        app:layout_constraintTop_toBottomOf="@id/txt_placar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_retultado_voltar_inicio"
@@ -48,9 +75,9 @@
         android:paddingEnd="30dp"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
-        app:layout_constraintTop_toTopOf="@id/txt_titulo_resultado"
+        app:layout_constraintTop_toBottomOf="@id/txt_placar"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_reiniciar"
+        app:layout_constraintStart_toEndOf="@id/btn_reiniciar"
         app:layout_constraintEnd_toEndOf="parent"
         />
 
