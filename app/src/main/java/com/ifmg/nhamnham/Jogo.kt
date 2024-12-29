@@ -20,6 +20,8 @@ class Jogo : AppCompatActivity() {
     private lateinit var binding: ActivityJogoBinding
     private var controleVezJogador:Boolean = true
     private var jogoContinua:Boolean = true
+    private var placarJogador1 = 0  // Variável para o placar do Jogador 1
+    private var placarJogador2 = 0  // Variável para o placar do Jogador 2
 
     @SuppressLint("ClickableViewAccessibility") // TODO Configurar o listener de arrastar as peças para um método separado
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +31,10 @@ class Jogo : AppCompatActivity() {
         // Inflar os componentes da interface
         binding = ActivityJogoBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Recuperar o placar, caso exista
+        placarJogador1 = intent.getIntExtra("placarJogador1", 0)  // Se não tiver, será 0
+        placarJogador2 = intent.getIntExtra("placarJogador2", 0)  // Se não tiver, será 0
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -250,6 +256,24 @@ class Jogo : AppCompatActivity() {
             ) {
                 jogoContinua = false // Impedir que as peças sejam colocadas no tabuleiro
                 binding.btnResultado.visibility = View.VISIBLE // Mostrar botão de resultado
+
+                // Definir o vencedor
+                val vencedor = if (blocos[a].peca.jogador) "Jogador 1" else "Jogador 2"
+
+                // Atualizar o placar ao final do jogo
+                if (blocos[a].peca.jogador) {
+                    placarJogador1++
+                } else {
+                    placarJogador2++
+                }
+
+                // Enviar o vencedor e o placar para a tela de resultado
+                val intent = Intent(this, Resultado::class.java)
+                intent.putExtra("vencedor", vencedor)
+                intent.putExtra("placarJogador1", placarJogador1)
+                intent.putExtra("placarJogador2", placarJogador2)
+                startActivity(intent)
+
                 return true // Há um vencedor
             }
         }
@@ -264,6 +288,14 @@ class Jogo : AppCompatActivity() {
         val jogador2SemPecas = jogador2.pecas.all { it.quantidade == 0 }
 
         if (jogador1SemPecas && jogador2SemPecas) {
+            jogoContinua = false // Impedir que as peças sejam colocadas no tabuleiro
+            binding.btnResultado.visibility = View.VISIBLE // Mostrar botão de resultado
+
+            // Enviar empate para a tela de resultado
+            val intent = Intent(this, Resultado::class.java)
+            intent.putExtra("vencedor", "Empate")
+            startActivity(intent)
+
             return true // Empate porque nenhum jogador possui peças
         }
 
@@ -276,7 +308,19 @@ class Jogo : AppCompatActivity() {
             peca.quantidade > 0 && blocos.any { bloco -> bloco.podeColocar(peca) }
         }
 
-        return jogador1SemJogadas && jogador2SemJogadas
+        if (jogador1SemJogadas && jogador2SemJogadas) {
+            jogoContinua = false // Impedir que as peças sejam colocadas no tabuleiro
+            binding.btnResultado.visibility = View.VISIBLE // Mostrar botão de resultado
+
+            // Enviar empate para a tela de resultado
+            val intent = Intent(this, Resultado::class.java)
+            intent.putExtra("vencedor", "Empate")
+            startActivity(intent)
+
+            return true
+        }
+
+        return false
     }
 
 }
