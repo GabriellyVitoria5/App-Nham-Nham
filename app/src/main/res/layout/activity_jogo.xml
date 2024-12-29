@@ -250,7 +250,8 @@
         app:layout_constraintTop_toBottomOf="@+id/jogador2_peca_pequena"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_jogo_voltar_inicio"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="invisible"/> <!-- Esconder botão de resultado enquanto o jogo não tem um vencedor-->
 
     <!-- Contadores de peças do jogador 1 -->
     <TextView
