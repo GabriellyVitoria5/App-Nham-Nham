@@ -160,7 +160,6 @@ class Jogo : AppCompatActivity() {
             }
         }
 
-
         configurarBotaoVoltar()
         configurarBotaoResultado()
     }
@@ -246,6 +245,7 @@ class Jogo : AppCompatActivity() {
                 blocos[a].peca.jogador == blocos[c].peca.jogador
             ) {
                 jogoContinua = false // Impedir que as peças sejam colocadas no tabuleiro
+                binding.btnResultado.visibility = View.VISIBLE // Mostrar botão de resultado
                 return true // Há um vencedor
             }
         }
