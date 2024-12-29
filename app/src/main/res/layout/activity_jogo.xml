@@ -257,25 +257,26 @@
         android:id="@+id/contador_pecas_jogador1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:text="@string/cont_pecas_jogador1"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="@dimen/font_pequena"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/jogador1_peca_grande"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="Jogador 1: P=3 M=3 G=3" />
+         />
 
     <!-- Contadores de peças do jogador 2 -->
     <TextView
         android:id="@+id/contador_pecas_jogador2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:text="@string/cont_pecas_jogador2"
         android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/jogador2_peca_grande"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="@dimen/font_pequena"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="Jogador 2: P=3 M=3 G=3" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/jogador2_peca_grande" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -50,22 +50,10 @@ class Jogo : AppCompatActivity() {
         )
 
         // Instanciando 2 jogadores para jogar o jogo
-        val jogador1 = Jogador("Jogador 1", pecasJogador1, true)
-        val jogador2 = Jogador("Jogador 2", pecasJogador2,false)
+        val jogador1 = Jogador(pecasJogador1, true)
+        val jogador2 = Jogador(pecasJogador2,false)
 
         // Armazenando os 9 espaços possíveis para colocar as peças
-        /*val blocos = listOf(
-            binding.bloco1,
-            binding.bloco2,
-            binding.bloco3,
-            binding.bloco4,
-            binding.bloco5,
-            binding.bloco6,
-            binding.bloco7,
-            binding.bloco8,
-            binding.bloco9,
-        )*/
-
         val blocos = listOf(
             Bloco(binding.bloco1),
             Bloco(binding.bloco2),
@@ -77,20 +65,6 @@ class Jogo : AppCompatActivity() {
             Bloco(binding.bloco8),
             Bloco(binding.bloco9),
         )
-
-
-        // Configurando o listener para todas as peças
-        /*(pecasJogador1 + pecasJogador2).forEach { peca ->
-            peca.imagem.setOnTouchListener { view, event ->
-                if (event.action == MotionEvent.ACTION_DOWN) {
-                    val dragShadowBuilder = View.DragShadowBuilder(view)
-                    view.startDragAndDrop(null, dragShadowBuilder, peca, 0) // Passa a peça como dado local
-                    true
-                } else {
-                    false
-                }
-            }
-        }*/
 
         // Configurando o listener para as peças do joador 1
         pecasJogador1.forEach { peca ->
@@ -118,38 +92,7 @@ class Jogo : AppCompatActivity() {
             }
         }
 
-
         // TODO arrumar bug visual em que a imagem da peça fica pequena
-        // Configurando o listener de arraste para todos os blocos
-        /*blocos.forEach { bloco ->
-            bloco.setOnDragListener { view, event ->
-                when (event.action) {
-                    DragEvent.ACTION_DRAG_STARTED -> true
-                    DragEvent.ACTION_DROP -> {
-                        val peca = event.localState as Peca
-
-                        if (peca.quantidade > 0) {
-                            // Atualiza o fundo do bloco com a imagem da peça arrastada
-                            (view as ImageView).setImageDrawable(peca.imagem.background)
-
-                            // Decrementa a quantidade da peça
-                            peca.quantidade -= 1
-
-                            // Remove a imagem da peça se a quantidade chegar a 0
-                            if (peca.quantidade == 0) {
-                                peca.imagem.visibility = View.INVISIBLE
-                            }
-                        }
-                        true
-                    }
-                    DragEvent.ACTION_DRAG_ENDED -> {
-                        true
-                    }
-                    else -> false
-                }
-            }
-        }*/
-
         blocos.forEach { bloco ->
             bloco.view.setOnDragListener { view, event ->
                 when (event.action) {
@@ -179,6 +122,9 @@ class Jogo : AppCompatActivity() {
                             // Feedback visual ou sonoro para peça inválida
                             bloco.view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
                         }
+
+                        mostrarVezJogador(controleVezJogador)
+
                         true
                     }
                     DragEvent.ACTION_DRAG_ENDED -> {
@@ -233,5 +179,16 @@ class Jogo : AppCompatActivity() {
 
         binding.contadorPecasJogador1.text = textoJ1
         binding.contadorPecasJogador2.text = textoJ2
+    }
+
+    // Indicar na tela qual jogador deve jogar a próxima peça
+    fun mostrarVezJogador(controleVezJogador: Boolean){
+        val jogadorAtual = if (controleVezJogador){
+            "Jogador 1"
+        }
+        else{
+            "Jogador 2"
+        }
+        Toast.makeText(this, "Vez de ${jogadorAtual}", Toast.LENGTH_SHORT).show()
     }
 }

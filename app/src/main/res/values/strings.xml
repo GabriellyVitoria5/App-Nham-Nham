@@ -36,4 +36,6 @@
     <string name="desc_img_bloco7">Bloco 7, linha 3 e coluna 1, do jogo da velha</string>
     <string name="desc_img_bloco8">Bloco 8, linha 3 e coluna 2, do jogo da velha</string>
     <string name="desc_img_bloco9">Bloco 9, linha 3 e coluna 3, do jogo da velha</string>
+    <string name="cont_pecas_jogador1">Jogador 1: P=3 M=3 G=3</string>
+    <string name="cont_pecas_jogador2">Jogador 2: P=3 M=3 G=3</string>
 </resources>
