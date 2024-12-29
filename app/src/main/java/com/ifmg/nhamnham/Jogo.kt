@@ -140,6 +140,10 @@ class Jogo : AppCompatActivity() {
                                 jogoContinua = false
                                 val jogador = if (peca.jogador) "Jogador 1" else "Jogador 2"
                                 Toast.makeText(this, "$jogador ganhou!", Toast.LENGTH_SHORT).show()
+                            }else if (verificarEmpate(jogador1, jogador2, blocos)) {
+                                jogoContinua = false
+                                Toast.makeText(this, "O jogo terminou em empate!", Toast.LENGTH_SHORT).show()
+                                binding.btnResultado.visibility = View.VISIBLE // Mostrar botão de resultado
                             }
 
                         }
@@ -235,7 +239,7 @@ class Jogo : AppCompatActivity() {
         for (combinacao in combinacoesVencedoras) {
             val (a, b, c) = combinacao
             if (
-                // Verifica se os blocos não estão vazios
+            // Verifica se os blocos não estão vazios
                 blocos[a].tamanhoAtual != -1 &&
                 blocos[b].tamanhoAtual != -1 &&
                 blocos[c].tamanhoAtual != -1 &&
@@ -252,4 +256,27 @@ class Jogo : AppCompatActivity() {
 
         return false // Sem vencedor
     }
+
+    // Verificar se jogo terminou em empate: jogadores estão sem peças ou as peças restantes não podem são menores do que as peças do tabuleiro
+    private fun verificarEmpate(jogador1: Jogador, jogador2: Jogador, blocos: Array<Bloco>): Boolean {
+        // Verifica se ambos os jogadores estão sem peças
+        val jogador1SemPecas = jogador1.pecas.all { it.quantidade == 0 }
+        val jogador2SemPecas = jogador2.pecas.all { it.quantidade == 0 }
+
+        if (jogador1SemPecas && jogador2SemPecas) {
+            return true // Empate porque nenhum jogador possui peças
+        }
+
+        // Verifica se ambos os jogadores não podem fazer jogadas válidas
+        val jogador1SemJogadas = jogador1.pecas.none { peca ->
+            peca.quantidade > 0 && blocos.any { bloco -> bloco.podeColocar(peca) }
+        }
+
+        val jogador2SemJogadas = jogador2.pecas.none { peca ->
+            peca.quantidade > 0 && blocos.any { bloco -> bloco.podeColocar(peca) }
+        }
+
+        return jogador1SemJogadas && jogador2SemJogadas
+    }
+
 }
