@@ -48,8 +48,14 @@ class Resultado : AppCompatActivity() {
         binding.btnRetultadoVoltarInicio.setOnClickListener {
             // Quando voltar à tela inicial, o placar é zerado
             val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("placarJogador1", 0)
-            intent.putExtra("placarJogador2", 0)
+
+            // Limpar placar
+            val sharedPreferences = getSharedPreferences("placar", MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.putInt("placarJogador1", 0)
+            editor.putInt("placarJogador2", 0)
+            editor.apply()
+
             startActivity(intent)
         }
 

@@ -28,6 +28,9 @@ class Jogo : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+        // Carregar o placar
+        carregarPlacar()
+
         // Inflar os componentes da interface
         binding = ActivityJogoBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -186,6 +189,13 @@ class Jogo : AppCompatActivity() {
     // Configurar botão para mover para activity Main
     private fun configurarBotaoVoltar(){
         binding.btnJogoVoltarInicio.setOnClickListener {
+            // Limpar placar
+            val sharedPreferences = getSharedPreferences("placar", MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.putInt("placarJogador1", 0)
+            editor.putInt("placarJogador2", 0)
+            editor.apply()
+
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
@@ -274,9 +284,15 @@ class Jogo : AppCompatActivity() {
                 intent.putExtra("placarJogador2", placarJogador2)
                 startActivity(intent)
 
+                // Salvar o placar quando houver um vencedor
+                salvarPlacar()
+
                 return true // Há um vencedor
             }
         }
+
+        // Salvar o placar quando houver um vencedor
+        salvarPlacar()
 
         return false // Sem vencedor
     }
@@ -321,6 +337,22 @@ class Jogo : AppCompatActivity() {
         }
 
         return false
+    }
+
+    // Função para salvar o placar no SharedPreferences
+    private fun salvarPlacar() {
+        val sharedPreferences = getSharedPreferences("placar", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putInt("placarJogador1", placarJogador1)
+        editor.putInt("placarJogador2", placarJogador2)
+        editor.apply()
+    }
+
+    // Função para carregar o placar do SharedPreferences
+    private fun carregarPlacar() {
+        val sharedPreferences = getSharedPreferences("placar", MODE_PRIVATE)
+        placarJogador1 = sharedPreferences.getInt("placarJogador1", 0)
+        placarJogador2 = sharedPreferences.getInt("placarJogador2", 0)
     }
 
 }
