@@ -20,15 +20,24 @@ class Jogo : AppCompatActivity() {
     private lateinit var binding: ActivityJogoBinding
     private var controleVezJogador:Boolean = true
     private var jogoContinua:Boolean = true
+    private var placarJogador1 = 0  // Variável para o placar do Jogador 1
+    private var placarJogador2 = 0  // Variável para o placar do Jogador 2
 
     @SuppressLint("ClickableViewAccessibility") // TODO Configurar o listener de arrastar as peças para um método separado
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+        // Carregar o placar
+        carregarPlacar()
+
         // Inflar os componentes da interface
         binding = ActivityJogoBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Recuperar o placar, caso exista
+        placarJogador1 = intent.getIntExtra("placarJogador1", 0)  // Se não tiver, será 0
+        placarJogador2 = intent.getIntExtra("placarJogador2", 0)  // Se não tiver, será 0
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -180,6 +189,13 @@ class Jogo : AppCompatActivity() {
     // Configurar botão para mover para activity Main
     private fun configurarBotaoVoltar(){
         binding.btnJogoVoltarInicio.setOnClickListener {
+            // Limpar placar
+            val sharedPreferences = getSharedPreferences("placar", MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.putInt("placarJogador1", 0)
+            editor.putInt("placarJogador2", 0)
+            editor.apply()
+
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
@@ -250,9 +266,33 @@ class Jogo : AppCompatActivity() {
             ) {
                 jogoContinua = false // Impedir que as peças sejam colocadas no tabuleiro
                 binding.btnResultado.visibility = View.VISIBLE // Mostrar botão de resultado
+
+                // Definir o vencedor
+                val vencedor = if (blocos[a].peca.jogador) "Jogador 1" else "Jogador 2"
+
+                // Atualizar o placar ao final do jogo
+                if (blocos[a].peca.jogador) {
+                    placarJogador1++
+                } else {
+                    placarJogador2++
+                }
+
+                // Enviar o vencedor e o placar para a tela de resultado
+                val intent = Intent(this, Resultado::class.java)
+                intent.putExtra("vencedor", vencedor)
+                intent.putExtra("placarJogador1", placarJogador1)
+                intent.putExtra("placarJogador2", placarJogador2)
+                startActivity(intent)
+
+                // Salvar o placar quando houver um vencedor
+                salvarPlacar()
+
                 return true // Há um vencedor
             }
         }
+
+        // Salvar o placar quando houver um vencedor
+        salvarPlacar()
 
         return false // Sem vencedor
     }
@@ -264,6 +304,14 @@ class Jogo : AppCompatActivity() {
         val jogador2SemPecas = jogador2.pecas.all { it.quantidade == 0 }
 
         if (jogador1SemPecas && jogador2SemPecas) {
+            jogoContinua = false // Impedir que as peças sejam colocadas no tabuleiro
+            binding.btnResultado.visibility = View.VISIBLE // Mostrar botão de resultado
+
+            // Enviar empate para a tela de resultado
+            val intent = Intent(this, Resultado::class.java)
+            intent.putExtra("vencedor", "Empate")
+            startActivity(intent)
+
             return true // Empate porque nenhum jogador possui peças
         }
 
@@ -276,7 +324,35 @@ class Jogo : AppCompatActivity() {
             peca.quantidade > 0 && blocos.any { bloco -> bloco.podeColocar(peca) }
         }
 
-        return jogador1SemJogadas && jogador2SemJogadas
+        if (jogador1SemJogadas && jogador2SemJogadas) {
+            jogoContinua = false // Impedir que as peças sejam colocadas no tabuleiro
+            binding.btnResultado.visibility = View.VISIBLE // Mostrar botão de resultado
+
+            // Enviar empate para a tela de resultado
+            val intent = Intent(this, Resultado::class.java)
+            intent.putExtra("vencedor", "Empate")
+            startActivity(intent)
+
+            return true
+        }
+
+        return false
+    }
+
+    // Função para salvar o placar no SharedPreferences
+    private fun salvarPlacar() {
+        val sharedPreferences = getSharedPreferences("placar", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putInt("placarJogador1", placarJogador1)
+        editor.putInt("placarJogador2", placarJogador2)
+        editor.apply()
+    }
+
+    // Função para carregar o placar do SharedPreferences
+    private fun carregarPlacar() {
+        val sharedPreferences = getSharedPreferences("placar", MODE_PRIVATE)
+        placarJogador1 = sharedPreferences.getInt("placarJogador1", 0)
+        placarJogador2 = sharedPreferences.getInt("placarJogador2", 0)
     }
 
 }
