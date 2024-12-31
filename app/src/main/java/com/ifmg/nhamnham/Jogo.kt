@@ -47,15 +47,15 @@ class Jogo : AppCompatActivity() {
 
         // Lista com as 9 peças de cada jogador, cada imagem no layout se tornará 3 peças de cada tamanho
         val pecasJogador1 = criarPecas(
-            binding.jogador1PecaPequena,
-            binding.jogador1PecaMedia,
-            binding.jogador1PecaGrande,
+            binding.jogador1PecaP,
+            binding.jogador1PecaM,
+            binding.jogador1PecaG,
             true
         )
         val pecasJogador2 = criarPecas(
-            binding.jogador2PecaPequena,
-            binding.jogador2PecaMedia,
-            binding.jogador2PecaGrande,
+            binding.jogador2PecaP,
+            binding.jogador2PecaM,
+            binding.jogador2PecaG,
             false
         )
 
@@ -223,6 +223,14 @@ class Jogo : AppCompatActivity() {
 
         binding.contadorPecasJogador1.text = textoJ1
         binding.contadorPecasJogador2.text = textoJ2
+
+        binding.jogador1QuantPecaP.text = "${pecasRestantesJ1[0]}"
+        binding.jogador1QuantPecaM.text = "${pecasRestantesJ1[1]}"
+        binding.jogador1QuantPecaG.text = "${pecasRestantesJ1[2]}"
+
+        binding.jogador2QuantPecaP.text = "${pecasRestantesJ2[0]}"
+        binding.jogador2QuantPecaM.text = "${pecasRestantesJ2[1]}"
+        binding.jogador2QuantPecaG.text = "${pecasRestantesJ2[2]}"
     }
 
     // Indicar na tela qual jogador deve jogar a próxima peça
@@ -240,7 +248,7 @@ class Jogo : AppCompatActivity() {
     // Verificar se há um vencedor de acordo com as condições de vitória do jogo da velha
     private fun temVencedor(blocos: Array<Bloco>): Boolean {
 
-        // Posições vencedoras em um array 2D
+        // Posições vencedoras em um array
         val combinacoesVencedoras  = arrayOf(
             arrayOf(0, 1, 2), // Linha 1
             arrayOf(3, 4, 5), // Linha 2
