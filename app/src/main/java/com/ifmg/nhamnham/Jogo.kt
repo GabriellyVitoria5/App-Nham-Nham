@@ -230,10 +230,10 @@ class Jogo : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun mostrarJogadorAtual(){
         if (controleVezJogador){
-            binding.mostrarVezJogador.text = "Vez do Jogador 1"
+            binding.txtVezJogador.text = "Vez do Jogador 1"
         }
         else{
-            binding.mostrarVezJogador.text = "Vez do Jogador 2"
+            binding.txtVezJogador.text = "Vez do Jogador 2"
         }
     }
 

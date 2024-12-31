@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:text="@string/quantidade_pecas"
         android:textSize="@dimen/fonte_30"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/jogador1_peca_p"
         app:layout_constraintTop_toTopOf="@+id/jogador1_peca_p"
         />
@@ -49,6 +50,7 @@
         android:layout_height="wrap_content"
         android:text="@string/quantidade_pecas"
         android:textSize="@dimen/fonte_30"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/jogador1_peca_m"
         app:layout_constraintTop_toTopOf="@+id/jogador1_peca_m"
         />
@@ -71,6 +73,7 @@
         android:layout_height="wrap_content"
         android:text="@string/quantidade_pecas"
         android:textSize="@dimen/fonte_30"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/jogador1_peca_g"
         app:layout_constraintTop_toTopOf="@+id/jogador1_peca_g"
         />
@@ -227,6 +230,7 @@
         android:layout_height="wrap_content"
         android:text="@string/quantidade_pecas"
         android:textSize="@dimen/fonte_30"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/jogador2_peca_p"
         app:layout_constraintTop_toTopOf="@+id/jogador2_peca_p"
         />
@@ -249,6 +253,7 @@
         android:layout_height="wrap_content"
         android:text="@string/quantidade_pecas"
         android:textSize="@dimen/fonte_30"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/jogador2_peca_m"
         app:layout_constraintTop_toTopOf="@+id/jogador2_peca_m"
         />
@@ -271,6 +276,7 @@
         android:layout_height="wrap_content"
         android:text="@string/quantidade_pecas"
         android:textSize="@dimen/fonte_30"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/jogador2_peca_g"
         app:layout_constraintTop_toTopOf="@+id/jogador2_peca_g"
         />
@@ -315,13 +321,12 @@
 
     <!-- Mostrar qual jogador deve jogar a seguir -->
     <TextView
-        android:id="@+id/mostrar_vez_jogador"
+        android:id="@+id/txt_vez_jogador"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/vez_jogador_1"
-        android:textColor="@color/black"
         android:textSize="@dimen/fonte_20"
-        android:layout_marginTop="8dp"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/jogador2_peca_p"
