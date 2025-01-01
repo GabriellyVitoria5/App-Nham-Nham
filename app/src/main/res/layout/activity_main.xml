@@ -7,25 +7,28 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!-- Título -->
     <TextView
         android:id="@+id/txt_titulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/titulo"
-        android:textSize="@dimen/font_large"
+        android:textSize="@dimen/fonte_64"
         android:textStyle="bold"
+        android:textColor="@color/black"
         android:layout_marginTop="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
 
+    <!-- Botões de iniciar partida e de regras -->
     <Button
         android:id="@+id/btn_partida"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/partida"
-        android:textSize="@dimen/font_normal"
+        android:textSize="@dimen/fonte_30"
         android:textStyle="bold"
         app:cornerRadius="0dp"
         android:paddingStart="50dp"
@@ -44,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/regras_do_jogo"
-        android:textSize="@dimen/font_normal"
+        android:textSize="@dimen/fonte_30"
         android:textStyle="bold"
         app:cornerRadius="0dp"
         android:paddingStart="50dp"

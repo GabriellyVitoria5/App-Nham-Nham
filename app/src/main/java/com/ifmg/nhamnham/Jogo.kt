@@ -47,15 +47,15 @@ class Jogo : AppCompatActivity() {
 
         // Lista com as 9 peças de cada jogador, cada imagem no layout se tornará 3 peças de cada tamanho
         val pecasJogador1 = criarPecas(
-            binding.jogador1PecaPequena,
-            binding.jogador1PecaMedia,
-            binding.jogador1PecaGrande,
+            binding.jogador1PecaP,
+            binding.jogador1PecaM,
+            binding.jogador1PecaG,
             true
         )
         val pecasJogador2 = criarPecas(
-            binding.jogador2PecaPequena,
-            binding.jogador2PecaMedia,
-            binding.jogador2PecaGrande,
+            binding.jogador2PecaP,
+            binding.jogador2PecaM,
+            binding.jogador2PecaG,
             false
         )
 
@@ -142,6 +142,7 @@ class Jogo : AppCompatActivity() {
 
                             // Atualiza os contadores
                             atualizarContadores(jogador1, jogador2)
+                            mostrarJogadorAtual()
 
                             // Verificar se um jogador ganhou
                             val vencedor = temVencedor(blocos)
@@ -160,8 +161,6 @@ class Jogo : AppCompatActivity() {
                             // Feedback visual ou sonoro para peça inválida
                             bloco.view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
                         }
-
-                        mostrarVezJogador(controleVezJogador)
 
                         true
                     }
@@ -218,29 +217,30 @@ class Jogo : AppCompatActivity() {
             entry.value.sumOf { it.quantidade }
         }
 
-        val textoJ1 = "Jogador 1: P=${pecasRestantesJ1[0] ?: 0} M=${pecasRestantesJ1[1] ?: 0} G=${pecasRestantesJ1[2] ?: 0}"
-        val textoJ2 = "Jogador 2: P=${pecasRestantesJ2[0] ?: 0} M=${pecasRestantesJ2[1] ?: 0} G=${pecasRestantesJ2[2] ?: 0}"
+        binding.jogador1QuantPecaP.text = "${pecasRestantesJ1[0]}"
+        binding.jogador1QuantPecaM.text = "${pecasRestantesJ1[1]}"
+        binding.jogador1QuantPecaG.text = "${pecasRestantesJ1[2]}"
 
-        binding.contadorPecasJogador1.text = textoJ1
-        binding.contadorPecasJogador2.text = textoJ2
+        binding.jogador2QuantPecaP.text = "${pecasRestantesJ2[0]}"
+        binding.jogador2QuantPecaM.text = "${pecasRestantesJ2[1]}"
+        binding.jogador2QuantPecaG.text = "${pecasRestantesJ2[2]}"
     }
 
-    // Indicar na tela qual jogador deve jogar a próxima peça
-    private fun mostrarVezJogador(controleVezJogador: Boolean){
-        if (jogoContinua) {
-            val jogadorAtual = if (controleVezJogador) {
-                "Jogador 1"
-            } else {
-                "Jogador 2"
-            }
-            Toast.makeText(this, "Vez de $jogadorAtual", Toast.LENGTH_SHORT).show()
+    // Mostrar qual jogador deve jogar a seguir
+    @SuppressLint("SetTextI18n")
+    private fun mostrarJogadorAtual(){
+        if (controleVezJogador){
+            binding.txtVezJogador.text = "Vez do Jogador 1"
+        }
+        else{
+            binding.txtVezJogador.text = "Vez do Jogador 2"
         }
     }
 
     // Verificar se há um vencedor de acordo com as condições de vitória do jogo da velha
     private fun temVencedor(blocos: Array<Bloco>): Boolean {
 
-        // Posições vencedoras em um array 2D
+        // Posições vencedoras em um array
         val combinacoesVencedoras  = arrayOf(
             arrayOf(0, 1, 2), // Linha 1
             arrayOf(3, 4, 5), // Linha 2
