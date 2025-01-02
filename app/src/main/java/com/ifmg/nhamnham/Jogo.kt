@@ -18,10 +18,13 @@ import com.ifmg.nhamnham.databinding.ActivityJogoBinding
 class Jogo : AppCompatActivity() {
 
     private lateinit var binding: ActivityJogoBinding
+    private lateinit var tabuleiro: Tabluleiro
     private var controleVezJogador:Boolean = true
     private var jogoContinua:Boolean = true
-    private var placarJogador1 = 0  // Variável para o placar do Jogador 1
-    private var placarJogador2 = 0  // Variável para o placar do Jogador 2
+
+    // Placar dos jogadores
+    private var placarJogador1 = 0
+    private var placarJogador2 = 0
 
     @SuppressLint("ClickableViewAccessibility") // TODO Configurar o listener de arrastar as peças para um método separado
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,7 +79,9 @@ class Jogo : AppCompatActivity() {
             Bloco(binding.bloco9),
         )
 
-        // Configurando o listener para as peças do joador 1
+        tabuleiro = Tabluleiro(blocos)
+
+        // Configurando o listener para as peças do jogador 1
         pecasJogador1.forEach { peca ->
             peca.imagem.setOnTouchListener { view, event ->
 
@@ -96,7 +101,7 @@ class Jogo : AppCompatActivity() {
             }
         }
 
-        // Configurando o listener para as peças do joador 2
+        // Configurando o listener para as peças do jogador 2
         pecasJogador2.forEach { peca ->
             peca.imagem.setOnTouchListener { view, event ->
 
@@ -124,10 +129,10 @@ class Jogo : AppCompatActivity() {
                     DragEvent.ACTION_DROP -> {
                         val peca = event.localState as Peca
 
-                        if (peca.quantidade > 0 && bloco.podeColocar(peca)) {
+                        if (peca.quantidade > 0 && bloco.podeReceberPeca(peca)) {
                             (view as ImageView).setImageDrawable(peca.imagem.background)
 
-                            // Decrementa a quantidade da peça
+                            // Decrementa a quantidade da peça usada pelo jogador
                             peca.quantidade -= 1
 
                             // Remove a imagem da peça se a quantidade chegar a 0
@@ -135,27 +140,19 @@ class Jogo : AppCompatActivity() {
                                 peca.imagem.visibility = View.INVISIBLE
                             }
 
+                            // Atualizar estado do bloco/posição onde a peça foi colocada
                             bloco.tamanhoAtual = peca.tamanho
                             bloco.peca = peca
 
+                            // Alterar qual jogador devejogar
                             controleVezJogador = !controleVezJogador
 
-                            // Atualiza os contadores
-                            atualizarContadores(jogador1, jogador2)
+                            // Atualizar texto na tela
+                            atualizarContadoresDasPecas(jogador1, jogador2)
                             mostrarJogadorAtual()
 
-                            // Verificar se um jogador ganhou
-                            val vencedor = temVencedor(blocos)
-                            if(vencedor){
-                                jogoContinua = false
-                                val jogador = if (peca.jogador) "Jogador 1" else "Jogador 2"
-                                Toast.makeText(this, "$jogador ganhou!", Toast.LENGTH_SHORT).show()
-                            }else if (verificarEmpate(jogador1, jogador2, blocos)) {
-                                jogoContinua = false
-                                Toast.makeText(this, "O jogo terminou em empate!", Toast.LENGTH_SHORT).show()
-                                binding.btnResultado.visibility = View.VISIBLE // Mostrar botão de resultado
-                            }
-
+                            // Verificar se jogo terminou
+                            verificarFimDoJogo(jogador1, jogador2, peca)
                         }
                         else {
                             // Feedback visual ou sonoro para peça inválida
@@ -172,6 +169,7 @@ class Jogo : AppCompatActivity() {
             }
         }
 
+        // Configurar botões de troca de telas
         configurarBotaoVoltar()
         configurarBotaoResultado()
     }
@@ -209,7 +207,7 @@ class Jogo : AppCompatActivity() {
     }
 
     // Atualiza os contadores de peças restantes de cada jogador
-    private fun atualizarContadores(jogador1: Jogador, jogador2: Jogador) {
+    private fun atualizarContadoresDasPecas(jogador1: Jogador, jogador2: Jogador) {
         val pecasRestantesJ1 = jogador1.pecas.groupBy { it.tamanho }.mapValues { entry ->
             entry.value.sumOf { it.quantidade }
         }
@@ -237,106 +235,44 @@ class Jogo : AppCompatActivity() {
         }
     }
 
-    // Verificar se há um vencedor de acordo com as condições de vitória do jogo da velha
-    private fun temVencedor(blocos: Array<Bloco>): Boolean {
+    // Finalizar o jogo se houver vitória ou empate e atualizar o placar
+    private fun verificarFimDoJogo(jogador1: Jogador, jogador2: Jogador, peca: Peca){
+        if (tabuleiro.temVencedor()) {
+            jogoContinua = false
+            binding.btnResultado.visibility = View.VISIBLE // Mostrar botão de resultado
 
-        // Posições vencedoras em um array
-        val combinacoesVencedoras  = arrayOf(
-            arrayOf(0, 1, 2), // Linha 1
-            arrayOf(3, 4, 5), // Linha 2
-            arrayOf(6, 7, 8), // Linha 3
-            arrayOf(0, 3, 6), // Coluna 1
-            arrayOf(1, 4, 7), // Coluna 2
-            arrayOf(2, 5, 8), // Coluna 3
-            arrayOf(0, 4, 8), // Diagonal principal
-            arrayOf(2, 4, 6)  // Diagonal secundária
-        )
+            // Exibir mensagem de vitória
+            val vencedor = peca.getNomeDonoDaPeca()
+            Toast.makeText(this, "$vencedor venceu!", Toast.LENGTH_SHORT).show()
 
-        for (combinacao in combinacoesVencedoras) {
-            val (a, b, c) = combinacao
-            if (
-            // Verifica se os blocos não estão vazios
-                blocos[a].tamanhoAtual != -1 &&
-                blocos[b].tamanhoAtual != -1 &&
-                blocos[c].tamanhoAtual != -1 &&
-
-                // Verifica se as peças pertencem ao mesmo jogador
-                blocos[a].peca.jogador == blocos[b].peca.jogador &&
-                blocos[a].peca.jogador == blocos[c].peca.jogador
-            ) {
-                jogoContinua = false // Impedir que as peças sejam colocadas no tabuleiro
-                binding.btnResultado.visibility = View.VISIBLE // Mostrar botão de resultado
-
-                // Definir o vencedor
-                val vencedor = if (blocos[a].peca.jogador) "Jogador 1" else "Jogador 2"
-
-                // Atualizar o placar ao final do jogo
-                if (blocos[a].peca.jogador) {
-                    placarJogador1++
-                } else {
-                    placarJogador2++
-                }
-
-                // Enviar o vencedor e o placar para a tela de resultado
-                val intent = Intent(this, Resultado::class.java)
-                intent.putExtra("vencedor", vencedor)
-                intent.putExtra("placarJogador1", placarJogador1)
-                intent.putExtra("placarJogador2", placarJogador2)
-                startActivity(intent)
-
-                // Salvar o placar quando houver um vencedor
-                salvarPlacar()
-
-                return true // Há um vencedor
+            // Atualizar o placar ao final do jogo
+            if (peca.jogador) {
+                placarJogador1++
+            } else {
+                placarJogador2++
             }
-        }
 
-        // Salvar o placar quando houver um vencedor
-        salvarPlacar()
+            // Enviar o vencedor e o placar para a tela de resultado
+            val intent = Intent(this, Resultado::class.java)
+            intent.putExtra("vencedor", vencedor)
+            intent.putExtra("placarJogador1", placarJogador1)
+            intent.putExtra("placarJogador2", placarJogador2)
+            startActivity(intent)
 
-        return false // Sem vencedor
-    }
+            // Salvar o placar quando houver um vencedor
+            salvarPlacar()
 
-    // Verificar se jogo terminou em empate: jogadores estão sem peças ou as peças restantes não podem são menores do que as peças do tabuleiro
-    private fun verificarEmpate(jogador1: Jogador, jogador2: Jogador, blocos: Array<Bloco>): Boolean {
-        // Verifica se ambos os jogadores estão sem peças
-        val jogador1SemPecas = jogador1.pecas.all { it.quantidade == 0 }
-        val jogador2SemPecas = jogador2.pecas.all { it.quantidade == 0 }
+        } else if (tabuleiro.temEmpate(jogador1, jogador2)) {
+            jogoContinua = false
 
-        if (jogador1SemPecas && jogador2SemPecas) {
-            jogoContinua = false // Impedir que as peças sejam colocadas no tabuleiro
-            binding.btnResultado.visibility = View.VISIBLE // Mostrar botão de resultado
+            // Exibir mensagem de empate
+            Toast.makeText(this, "O jogo terminou em empate!", Toast.LENGTH_SHORT).show()
 
             // Enviar empate para a tela de resultado
             val intent = Intent(this, Resultado::class.java)
             intent.putExtra("vencedor", "Empate")
             startActivity(intent)
-
-            return true // Empate porque nenhum jogador possui peças
         }
-
-        // Verifica se ambos os jogadores não podem fazer jogadas válidas
-        val jogador1SemJogadas = jogador1.pecas.none { peca ->
-            peca.quantidade > 0 && blocos.any { bloco -> bloco.podeColocar(peca) }
-        }
-
-        val jogador2SemJogadas = jogador2.pecas.none { peca ->
-            peca.quantidade > 0 && blocos.any { bloco -> bloco.podeColocar(peca) }
-        }
-
-        if (jogador1SemJogadas && jogador2SemJogadas) {
-            jogoContinua = false // Impedir que as peças sejam colocadas no tabuleiro
-            binding.btnResultado.visibility = View.VISIBLE // Mostrar botão de resultado
-
-            // Enviar empate para a tela de resultado
-            val intent = Intent(this, Resultado::class.java)
-            intent.putExtra("vencedor", "Empate")
-            startActivity(intent)
-
-            return true
-        }
-
-        return false
     }
 
     // Função para salvar o placar no SharedPreferences
@@ -354,5 +290,4 @@ class Jogo : AppCompatActivity() {
         placarJogador1 = sharedPreferences.getInt("placarJogador1", 0)
         placarJogador2 = sharedPreferences.getInt("placarJogador2", 0)
     }
-
 }
