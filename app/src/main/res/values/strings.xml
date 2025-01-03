@@ -16,7 +16,7 @@
     <string name="regra6_titulo">6. Estratégia:</string>
     <string name="regra7_titulo">7. Placar:</string>
     <string name="regra1_conteudo">O objetivo é alinhar três peças do mesmo jogador em sequência na horizontal, vertical ou diagonal.</string>
-    <string name="regra2_conteudo">O jogo é para dois jogadores, alternando turnos no mesmo dispositivo. Cada jogador possui três peças de tamanhos diferentes: pequeno, médio e grande.</string>
+    <string name="regra2_conteudo">O jogo é para dois jogadores, alternando turnos no mesmo dispositivo. Cada jogador possui três peças de tamanhos diferentes: pequeno, médio e grande. As peças vermelhas represetnam o Jogador 1, e as azuis o Jogador 2. Por padrão o Jogador 1 começa a partida</string>
     <string name="regra3_conteudo">Cada jogador pode segurar e arrastar uma das peças e posicioná-la em um espaço vazio ou sobre outra menor, buscando alinhar três peças do mesmo jogador.</string>
     <string name="regra4_conteudo">Não é permitido posicionar uma peça menor ou do mesmo tamanho sobre outra peça.</string>
     <string name="regra5_conteudo">Vence quem alinhar três peças em sequência. Caso todas as células sejam preenchidas sem um vencedor, o jogo termina em empate.</string>
