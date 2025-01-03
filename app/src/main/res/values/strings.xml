@@ -21,7 +21,7 @@
     <string name="regra4_conteudo">Não é permitido posicionar uma peça menor ou do mesmo tamanho sobre outra peça.</string>
     <string name="regra5_conteudo">Vence quem alinhar três peças em sequência. Caso todas as células sejam preenchidas sem um vencedor, o jogo termina em empate.</string>
     <string name="regra6_conteudo">Pense estrategicamente para bloquear o adversário e aproveite a possibilidade de sobrepor peças maiores sobre as menores.</string>
-    <string name="regra7_conteudo">Após o término do jogo, os jogadores serão direcionados para uma tela com o resultado do jogo e um placar, que será reiniciado ao voltar para a tela inicial ou sair do aplicatico Nham Nham.</string>
+    <string name="regra7_conteudo">Após o final de cada partida, os jogadores podem clicar no botão de Resultado, que os levará à tela que exibe o resultado do jogo e o placar acumulado. Esse placar será reiniciado automaticamente caso os jogadores retornem à tela inicial ou saiam do aplicativo Nham Nham.</string>
     <string name="desc_img_grid">Imagem das linhas verticais e horizontais de um jogo da velha</string>
     <string name="desc_img_peca_p1">Peça pequena do jogador 1</string>
     <string name="desc_img_peca_m1">Peça média do jogador 1</string>
