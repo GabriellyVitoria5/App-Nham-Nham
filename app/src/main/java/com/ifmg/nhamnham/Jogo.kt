@@ -32,11 +32,12 @@ class Jogo : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+        // Placar começa com 0 ao iniciar o aplicativo
+        carregarPlacar()
+
         // Inflar os componentes da interface
         binding = ActivityJogoBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        carregarPlacar()
 
         // Recuperar o placar caso exista, senão será 0
         placarJogador1 = intent.getIntExtra("placarJogador1", placarJogador1)
@@ -271,8 +272,8 @@ class Jogo : AppCompatActivity() {
     // Carregar o placar do SharedPreferences
     private fun carregarPlacar() {
         val sharedPreferences = getSharedPreferences("placar", MODE_PRIVATE)
-        placarJogador1 = sharedPreferences.getInt("placarJogador1", placarJogador1)
-        placarJogador2 = sharedPreferences.getInt("placarJogador2", placarJogador2)
+        placarJogador1 = sharedPreferences.getInt("placarJogador1", 0)
+        placarJogador2 = sharedPreferences.getInt("placarJogador2", 0)
     }
 
     // Configurar botão para mover para activity Main
