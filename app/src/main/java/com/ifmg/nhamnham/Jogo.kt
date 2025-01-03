@@ -92,24 +92,16 @@ class Jogo : AppCompatActivity() {
                     return@setOnTouchListener false
                 }
 
-                // TODO: Resolver o bug visual tira a visualização da peça ao arrastar
-//                if (event.action == MotionEvent.ACTION_DOWN && controleVezJogador == jogador1.vezDeJogar) {
-//                    val dragShadowBuilder = View.DragShadowBuilder(view)
-//                    view.startDragAndDrop(null, dragShadowBuilder, peca, 0) // Passa a peça como dado local
-//                    true
-//                } else {
-//                    false
-//                }
-
                 if (event.action == MotionEvent.ACTION_DOWN && controleVezJogador == jogador1.vezDeJogar) {
+
                     // Criar uma cópia da peça original para arrastar
                     val copyImageView = ImageView(this).apply {
-                        setImageDrawable(peca.imagem.drawable) // A mesma imagem da peça
+                        setImageDrawable(peca.imagem.background) // A mesma imagem da peça
                         layoutParams = view.layoutParams // Usa as mesmas dimensões do original
                     }
 
                     // Definir o tamanho da cópia para caber no tabuleiro, por exemplo, redimensionando conforme o bloco
-                    val size = 100 // Exemplo de tamanho redimensionado para a cópia
+                    val size = peca.imagem.height // Peça é um quadrado, então só precisa de uma de suas dimensões
                     copyImageView.layoutParams = ViewGroup.LayoutParams(size, size)
 
                     // Criar a sombra personalizada para o arrasto
@@ -122,8 +114,7 @@ class Jogo : AppCompatActivity() {
                         }
 
                         override fun onDrawShadow(canvas: android.graphics.Canvas) {
-                            // Desenha a cópia da peça na sombra
-                            copyImageView.draw(canvas)
+                            copyImageView.draw(canvas) // Desenha a cópia da peça na sombra
                         }
                     }
 
@@ -149,12 +140,12 @@ class Jogo : AppCompatActivity() {
                 if (event.action == MotionEvent.ACTION_DOWN && controleVezJogador == jogador2.vezDeJogar) {
                     // Criar uma cópia da peça original para arrastar
                     val copyImageView = ImageView(this).apply {
-                        setImageDrawable(peca.imagem.drawable) // A mesma imagem da peça
+                        setImageDrawable(peca.imagem.background) // A mesma imagem da peça
                         layoutParams = view.layoutParams // Usa as mesmas dimensões do original
                     }
 
                     // Definir o tamanho da cópia para caber no tabuleiro, por exemplo, redimensionando conforme o bloco
-                    val size = 100 // Exemplo de tamanho redimensionado para a cópia
+                    val size = peca.imagem.height // Peça é um quadrado, então só precisa de uma de suas dimensões
                     copyImageView.layoutParams = ViewGroup.LayoutParams(size, size)
 
                     // Criar a sombra personalizada para o arrasto
