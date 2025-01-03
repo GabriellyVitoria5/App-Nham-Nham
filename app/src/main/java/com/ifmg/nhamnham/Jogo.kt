@@ -7,6 +7,7 @@ import android.view.DragEvent
 import android.view.HapticFeedbackConstants
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -92,8 +93,33 @@ class Jogo : AppCompatActivity() {
                 }
 
                 if (event.action == MotionEvent.ACTION_DOWN && controleVezJogador == jogador1.vezDeJogar) {
-                    val dragShadowBuilder = View.DragShadowBuilder(view)
-                    view.startDragAndDrop(null, dragShadowBuilder, peca, 0) // Passa a peça como dado local
+
+                    // Criar uma cópia da peça original para arrastar
+                    val copyImageView = ImageView(this).apply {
+                        setImageDrawable(peca.imagem.background) // A mesma imagem da peça
+                        layoutParams = view.layoutParams // Usa as mesmas dimensões do original
+                    }
+
+                    // Definir o tamanho da cópia para caber no tabuleiro, por exemplo, redimensionando conforme o bloco
+                    val size = peca.imagem.height // Peça é um quadrado, então só precisa de uma de suas dimensões
+                    copyImageView.layoutParams = ViewGroup.LayoutParams(size, size)
+
+                    // Criar a sombra personalizada para o arrasto
+                    val dragShadowBuilder = object : View.DragShadowBuilder(view) {
+                        override fun onProvideShadowMetrics(outShadowSize: android.graphics.Point, outShadowTouchPoint: android.graphics.Point) {
+                            val width = size
+                            val height = size
+                            outShadowSize.set(width, height)
+                            outShadowTouchPoint.set(width / 2, height / 2)
+                        }
+
+                        override fun onDrawShadow(canvas: android.graphics.Canvas) {
+                            copyImageView.draw(canvas) // Desenha a cópia da peça na sombra
+                        }
+                    }
+
+                    // Iniciar o arrasto com a cópia da peça, não alterando o original
+                    view.startDragAndDrop(null, dragShadowBuilder, peca, 0)
                     true
                 } else {
                     false
@@ -112,8 +138,33 @@ class Jogo : AppCompatActivity() {
                 }
 
                 if (event.action == MotionEvent.ACTION_DOWN && controleVezJogador == jogador2.vezDeJogar) {
-                    val dragShadowBuilder = View.DragShadowBuilder(view)
-                    view.startDragAndDrop(null, dragShadowBuilder, peca, 0) // Passa a peça como dado local
+                    // Criar uma cópia da peça original para arrastar
+                    val copyImageView = ImageView(this).apply {
+                        setImageDrawable(peca.imagem.background) // A mesma imagem da peça
+                        layoutParams = view.layoutParams // Usa as mesmas dimensões do original
+                    }
+
+                    // Definir o tamanho da cópia para caber no tabuleiro, por exemplo, redimensionando conforme o bloco
+                    val size = peca.imagem.height // Peça é um quadrado, então só precisa de uma de suas dimensões
+                    copyImageView.layoutParams = ViewGroup.LayoutParams(size, size)
+
+                    // Criar a sombra personalizada para o arrasto
+                    val dragShadowBuilder = object : View.DragShadowBuilder(view) {
+                        override fun onProvideShadowMetrics(outShadowSize: android.graphics.Point, outShadowTouchPoint: android.graphics.Point) {
+                            val width = size
+                            val height = size
+                            outShadowSize.set(width, height)
+                            outShadowTouchPoint.set(width / 2, height / 2)
+                        }
+
+                        override fun onDrawShadow(canvas: android.graphics.Canvas) {
+                            // Desenha a cópia da peça na sombra
+                            copyImageView.draw(canvas)
+                        }
+                    }
+
+                    // Iniciar o arrasto com a cópia da peça, não alterando o original
+                    view.startDragAndDrop(null, dragShadowBuilder, peca, 0)
                     true
                 } else {
                     false
