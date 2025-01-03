@@ -20,28 +20,28 @@ class Jogo : AppCompatActivity() {
 
     private lateinit var binding: ActivityJogoBinding
     private lateinit var tabuleiro: Tabluleiro
-    private var controleVezJogador:Boolean = true
-    private var jogoContinua:Boolean = true
+    private var controleVezJogador:Boolean = true // Controlar quando cada jogador
+    private var jogoContinua:Boolean = true // Controle para finalizar o jogo
 
-    // Placar dos jogadores
     private var placarJogador1 = 0
     private var placarJogador2 = 0
 
-    @SuppressLint("ClickableViewAccessibility") // TODO Configurar o listener de arrastar as peças para um método separado
+    private lateinit var resultadoJogo: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // Carregar o placar
+        // Placar começa com 0 ao iniciar o aplicativo
         carregarPlacar()
 
         // Inflar os componentes da interface
         binding = ActivityJogoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Recuperar o placar, caso exista
-        placarJogador1 = intent.getIntExtra("placarJogador1", 0)  // Se não tiver, será 0
-        placarJogador2 = intent.getIntExtra("placarJogador2", 0)  // Se não tiver, será 0
+        // Recuperar o placar caso exista, senão será 0
+        placarJogador1 = intent.getIntExtra("placarJogador1", placarJogador1)
+        placarJogador2 = intent.getIntExtra("placarJogador2", placarJogador2)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -80,24 +80,46 @@ class Jogo : AppCompatActivity() {
             Bloco(binding.bloco9),
         )
 
+        // Representa o tabuleiro 3x3 do jogo
         tabuleiro = Tabluleiro(blocos)
 
-        // Configurando o listener para as peças do jogador 1
-        pecasJogador1.forEach { peca ->
+        // Configurar listeners que permitem arrastar e soltar uma peça em um dos espaços disponíveis do tabuleiro
+        configurarListenersDeArrastar(pecasJogador1, jogador1)
+        configurarListenersDeArrastar(pecasJogador2, jogador2)
+        configurarListenersDeSoltar(blocos, jogador1, jogador2)
+
+        // Configurar botões de troca de telas
+        configurarBotaoVoltar()
+        configurarBotaoResultado()
+    }
+
+    // Criar uma lista com as 9 peças de um jogador: 3 pequenas, 3 médias e 3 grandes
+    private fun criarPecas(pecaPequena: ImageView, pecaMedia: ImageView, pecaGrande: ImageView, donoDaPeca: Boolean) : List<Peca>{
+        return listOf(
+            Peca(0, 3, pecaPequena, donoDaPeca),
+            Peca(1, 3, pecaMedia, donoDaPeca),
+            Peca(2, 3, pecaGrande, donoDaPeca)
+        )
+    }
+
+    // Configurar movimento de arrastar peças dos jogadores
+    @SuppressLint("ClickableViewAccessibility")
+    private fun configurarListenersDeArrastar(pecas: List<Peca>, jogador: Jogador) {
+        pecas.forEach { peca ->
             peca.imagem.setOnTouchListener { view, event ->
 
+                // Bloqueia o arrasto se o jogo acabou
                 if (!jogoContinua) {
-                    // Bloqueia o arrasto se o jogo acabou
                     Toast.makeText(this, "O jogo terminou!", Toast.LENGTH_SHORT).show()
                     return@setOnTouchListener false
                 }
 
-                if (event.action == MotionEvent.ACTION_DOWN && controleVezJogador == jogador1.vezDeJogar) {
+                if (event.action == MotionEvent.ACTION_DOWN && controleVezJogador == jogador.vezDeJogar) {
 
                     // Criar uma cópia da peça original para arrastar
                     val copyImageView = ImageView(this).apply {
                         setImageDrawable(peca.imagem.background) // A mesma imagem da peça
-                        layoutParams = view.layoutParams // Usa as mesmas dimensões do original
+                        layoutParams = view.layoutParams // Dimensões do original
                     }
 
                     // Definir o tamanho da cópia para caber no tabuleiro, por exemplo, redimensionando conforme o bloco
@@ -126,53 +148,10 @@ class Jogo : AppCompatActivity() {
                 }
             }
         }
+    }
 
-        // Configurando o listener para as peças do jogador 2
-        pecasJogador2.forEach { peca ->
-            peca.imagem.setOnTouchListener { view, event ->
-
-                if (!jogoContinua) {
-                    // Bloqueia o arrasto se o jogo acabou
-                    Toast.makeText(this, "O jogo terminou!", Toast.LENGTH_SHORT).show()
-                    return@setOnTouchListener false
-                }
-
-                if (event.action == MotionEvent.ACTION_DOWN && controleVezJogador == jogador2.vezDeJogar) {
-                    // Criar uma cópia da peça original para arrastar
-                    val copyImageView = ImageView(this).apply {
-                        setImageDrawable(peca.imagem.background) // A mesma imagem da peça
-                        layoutParams = view.layoutParams // Usa as mesmas dimensões do original
-                    }
-
-                    // Definir o tamanho da cópia para caber no tabuleiro, por exemplo, redimensionando conforme o bloco
-                    val size = peca.imagem.height // Peça é um quadrado, então só precisa de uma de suas dimensões
-                    copyImageView.layoutParams = ViewGroup.LayoutParams(size, size)
-
-                    // Criar a sombra personalizada para o arrasto
-                    val dragShadowBuilder = object : View.DragShadowBuilder(view) {
-                        override fun onProvideShadowMetrics(outShadowSize: android.graphics.Point, outShadowTouchPoint: android.graphics.Point) {
-                            val width = size
-                            val height = size
-                            outShadowSize.set(width, height)
-                            outShadowTouchPoint.set(width / 2, height / 2)
-                        }
-
-                        override fun onDrawShadow(canvas: android.graphics.Canvas) {
-                            // Desenha a cópia da peça na sombra
-                            copyImageView.draw(canvas)
-                        }
-                    }
-
-                    // Iniciar o arrasto com a cópia da peça, não alterando o original
-                    view.startDragAndDrop(null, dragShadowBuilder, peca, 0)
-                    true
-                } else {
-                    false
-                }
-            }
-        }
-
-        // TODO arrumar bug visual em que a imagem da peça fica pequena
+    // Configurar blocos para receber uma peça
+    private fun configurarListenersDeSoltar(blocos: Array<Bloco>, jogador1: Jogador, jogador2: Jogador) {
         blocos.forEach { bloco ->
             bloco.view.setOnDragListener { view, event ->
                 when (event.action) {
@@ -180,10 +159,10 @@ class Jogo : AppCompatActivity() {
                     DragEvent.ACTION_DROP -> {
                         val peca = event.localState as Peca
 
+                        // Peça pode ser colocada nesse bloco
                         if (peca.quantidade > 0 && bloco.podeReceberPeca(peca)) {
                             (view as ImageView).setImageDrawable(peca.imagem.background)
 
-                            // Decrementa a quantidade da peça usada pelo jogador
                             peca.quantidade -= 1
 
                             // Remove a imagem da peça se a quantidade chegar a 0
@@ -195,7 +174,7 @@ class Jogo : AppCompatActivity() {
                             bloco.tamanhoAtual = peca.tamanho
                             bloco.peca = peca
 
-                            // Alterar qual jogador devejogar
+                            // Alterar qual jogador deve jogar
                             controleVezJogador = !controleVezJogador
 
                             // Atualizar texto na tela
@@ -204,56 +183,17 @@ class Jogo : AppCompatActivity() {
 
                             // Verificar se jogo terminou
                             verificarFimDoJogo(jogador1, jogador2, peca)
-                        }
-                        else {
+                        } else {
                             // Feedback visual ou sonoro para peça inválida
                             bloco.view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
                         }
 
                         true
                     }
-                    DragEvent.ACTION_DRAG_ENDED -> {
-                        true
-                    }
+                    DragEvent.ACTION_DRAG_ENDED -> true
                     else -> false
                 }
             }
-        }
-
-        // Configurar botões de troca de telas
-        configurarBotaoVoltar()
-        configurarBotaoResultado()
-    }
-
-    // Criar uma lista com as 9 peças de um jogador: 3 pequenas, 3 médias e 3 grandes
-    private fun criarPecas(pecaPequena: ImageView, pecaMedia: ImageView, pecaGrande: ImageView, donoDaPeca: Boolean) : List<Peca>{
-        return listOf(
-            Peca(0, 3, pecaPequena, donoDaPeca),
-            Peca(1, 3, pecaMedia, donoDaPeca),
-            Peca(2, 3, pecaGrande, donoDaPeca)
-        )
-    }
-
-    // Configurar botão para mover para activity Main
-    private fun configurarBotaoVoltar(){
-        binding.btnJogoVoltarInicio.setOnClickListener {
-            // Limpar placar
-            val sharedPreferences = getSharedPreferences("placar", MODE_PRIVATE)
-            val editor = sharedPreferences.edit()
-            editor.putInt("placarJogador1", 0)
-            editor.putInt("placarJogador2", 0)
-            editor.apply()
-
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-    // Configurar botão para mover para activity de Resultado
-    private fun configurarBotaoResultado(){
-        binding.btnResultado.setOnClickListener {
-            val intent = Intent(this, Resultado::class.java)
-            startActivity(intent)
         }
     }
 
@@ -289,8 +229,9 @@ class Jogo : AppCompatActivity() {
     // Finalizar o jogo se houver vitória ou empate e atualizar o placar
     private fun verificarFimDoJogo(jogador1: Jogador, jogador2: Jogador, peca: Peca){
         if (tabuleiro.temVencedor()) {
-            jogoContinua = false
+            jogoContinua = false // Jogadores não podem mais fazer movimentos
             binding.btnResultado.visibility = View.VISIBLE // Mostrar botão de resultado
+            binding.txtVezJogador.text = ""
 
             // Exibir mensagem de vitória
             val vencedor = peca.getNomeDonoDaPeca()
@@ -303,30 +244,23 @@ class Jogo : AppCompatActivity() {
                 placarJogador2++
             }
 
-            // Enviar o vencedor e o placar para a tela de resultado
-            val intent = Intent(this, Resultado::class.java)
-            intent.putExtra("vencedor", vencedor)
-            intent.putExtra("placarJogador1", placarJogador1)
-            intent.putExtra("placarJogador2", placarJogador2)
-            startActivity(intent)
+            resultadoJogo = vencedor
 
             // Salvar o placar quando houver um vencedor
             salvarPlacar()
 
         } else if (tabuleiro.temEmpate(jogador1, jogador2)) {
-            jogoContinua = false
+            jogoContinua = false // Jogadores não podem mais fazer movimentos
+            binding.btnResultado.visibility = View.VISIBLE // Mostrar botão de resultado
+            resultadoJogo = "Empate"
+            binding.txtVezJogador.text = ""
 
             // Exibir mensagem de empate
             Toast.makeText(this, "O jogo terminou em empate!", Toast.LENGTH_SHORT).show()
-
-            // Enviar empate para a tela de resultado
-            val intent = Intent(this, Resultado::class.java)
-            intent.putExtra("vencedor", "Empate")
-            startActivity(intent)
         }
     }
 
-    // Função para salvar o placar no SharedPreferences
+    // Salvar o placar no SharedPreferences
     private fun salvarPlacar() {
         val sharedPreferences = getSharedPreferences("placar", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
@@ -335,10 +269,39 @@ class Jogo : AppCompatActivity() {
         editor.apply()
     }
 
-    // Função para carregar o placar do SharedPreferences
+    // Carregar o placar do SharedPreferences
     private fun carregarPlacar() {
         val sharedPreferences = getSharedPreferences("placar", MODE_PRIVATE)
         placarJogador1 = sharedPreferences.getInt("placarJogador1", 0)
         placarJogador2 = sharedPreferences.getInt("placarJogador2", 0)
+    }
+
+    // Configurar botão para mover para activity Main
+    private fun configurarBotaoVoltar(){
+        binding.btnJogoVoltarInicio.setOnClickListener {
+
+            // Limpar placar ao voltar para a tela inicial
+            val sharedPreferences = getSharedPreferences("placar", MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.putInt("placarJogador1", 0)
+            editor.putInt("placarJogador2", 0)
+            editor.apply()
+
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    // Configurar botão para mover para activity de Resultado
+    private fun configurarBotaoResultado(){
+        binding.btnResultado.setOnClickListener {
+
+            // Salva o placar e o resultado do jogo para ser mostrado na tela de resultado
+            val intent = Intent(this, Resultado::class.java)
+            intent.putExtra("vencedor", resultadoJogo)
+            intent.putExtra("placarJogador1", placarJogador1)
+            intent.putExtra("placarJogador2", placarJogador2)
+            startActivity(intent)
+        }
     }
 }

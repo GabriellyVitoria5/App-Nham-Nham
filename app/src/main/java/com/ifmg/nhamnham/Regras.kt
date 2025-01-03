@@ -25,6 +25,7 @@ class Regras : AppCompatActivity() {
             insets
         }
 
+        // // Mover para a activity de Main
         binding.btnRegrasVoltar.setOnClickListener {
             finish()
         }
