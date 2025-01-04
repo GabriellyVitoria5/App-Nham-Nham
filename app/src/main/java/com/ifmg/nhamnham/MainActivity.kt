@@ -2,7 +2,6 @@ package com.ifmg.nhamnham
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -27,11 +26,13 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        binding.btnPartida.setOnClickListener(View.OnClickListener {
+        // Mover para a activity de Jogo
+        binding.btnPartida.setOnClickListener {
             val intent = Intent(this, Jogo::class.java)
             startActivity(intent)
-        })
+        }
 
+        // Mover para a activity de Regras
         binding.btnRegras.setOnClickListener {
             val intent = Intent(this, Regras::class.java)
             startActivity(intent)

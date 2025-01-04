@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="font_pequena">15sp</dimen>
-    <dimen name="font_normal">30sp</dimen>
-    <dimen name="font_large">60sp</dimen>
+    <dimen name="fonte_16">16sp</dimen>
+    <dimen name="fonte_20">20sp</dimen>
+    <dimen name="fonte_30">30sp</dimen>
+    <dimen name="fonte_44">44sp</dimen>
+    <dimen name="fonte_64">64sp</dimen>
     <dimen name="borda_20">20dp</dimen>
 </resources>

@@ -5,14 +5,34 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
     tools:context=".Regras">
 
+    <!-- Ondas no fundo da tela-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@drawable/wavebottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:background="@drawable/wavetop2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Título -->
     <TextView
         android:id="@+id/txt_titulo_regras"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/regras"
-        android:textSize="@dimen/font_normal"
+        android:textSize="@dimen/fonte_30"
+        android:textColor="@color/white"
         android:layout_marginTop="50dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,13 +60,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- Regra 1 -->
             <TextView
                 android:id="@+id/txt_regra1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/regra1_titulo"
-                android:textSize="@dimen/font_pequena"
+                android:textSize="@dimen/fonte_16"
                 android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_marginTop="30dp"
                 android:layout_marginStart="@dimen/borda_20"
                 android:layout_marginEnd="@dimen/borda_20"
@@ -59,7 +81,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/regra1_conteudo"
-                android:textSize="@dimen/font_pequena"
+                android:textSize="@dimen/fonte_16"
+                android:textColor="@color/black"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="@dimen/borda_20"
@@ -68,13 +91,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 />
 
+            <!-- Regra 2 -->
             <TextView
                 android:id="@+id/txt_regra2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/regra2_titulo"
-                android:textSize="@dimen/font_pequena"
+                android:textSize="@dimen/fonte_16"
                 android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="@dimen/borda_20"
                 app:layout_constraintTop_toBottomOf="@id/txt_regra1_conteudo"
@@ -86,7 +111,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/regra2_conteudo"
-                android:textSize="@dimen/font_pequena"
+                android:textSize="@dimen/fonte_16"
+                android:textColor="@color/black"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="@dimen/borda_20"
@@ -95,13 +121,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 />
 
+            <!-- Regra 3 -->
             <TextView
                 android:id="@+id/txt_regra3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/regra3_titulo"
-                android:textSize="@dimen/font_pequena"
+                android:textSize="@dimen/fonte_16"
                 android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="@dimen/borda_20"
                 app:layout_constraintTop_toBottomOf="@id/txt_regra2_conteudo"
@@ -113,7 +141,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/regra3_conteudo"
-                android:textSize="@dimen/font_pequena"
+                android:textSize="@dimen/fonte_16"
+                android:textColor="@color/black"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="@dimen/borda_20"
@@ -122,13 +151,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 />
 
+            <!-- Regra 4 -->
             <TextView
                 android:id="@+id/txt_regra4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/regra4_titulo"
-                android:textSize="@dimen/font_pequena"
+                android:textSize="@dimen/fonte_16"
                 android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="@dimen/borda_20"
                 app:layout_constraintTop_toBottomOf="@id/txt_regra3_conteudo"
@@ -140,7 +171,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/regra4_conteudo"
-                android:textSize="@dimen/font_pequena"
+                android:textSize="@dimen/fonte_16"
+                android:textColor="@color/black"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="@dimen/borda_20"
@@ -149,13 +181,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 />
 
+            <!-- Regra 5 -->
             <TextView
                 android:id="@+id/txt_regra5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/regra5_titulo"
-                android:textSize="@dimen/font_pequena"
+                android:textSize="@dimen/fonte_16"
                 android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="@dimen/borda_20"
                 app:layout_constraintTop_toBottomOf="@id/txt_regra4_conteudo"
@@ -167,7 +201,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/regra5_conteudo"
-                android:textSize="@dimen/font_pequena"
+                android:textSize="@dimen/fonte_16"
+                android:textColor="@color/black"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="@dimen/borda_20"
@@ -176,13 +211,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 />
 
+            <!-- Regra 6 -->
             <TextView
                 android:id="@+id/txt_regra6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/regra6_titulo"
-                android:textSize="@dimen/font_pequena"
+                android:textSize="@dimen/fonte_16"
                 android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="@dimen/borda_20"
                 app:layout_constraintTop_toBottomOf="@id/txt_regra5_conteudo"
@@ -194,12 +231,43 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/regra6_conteudo"
-                android:textSize="@dimen/font_pequena"
+                android:textSize="@dimen/fonte_16"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="@dimen/borda_20"
+                app:layout_constraintTop_toBottomOf="@id/txt_regra6"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+            <!-- Regra 7 -->
+            <TextView
+                android:id="@+id/txt_regra7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/regra7_titulo"
+                android:textSize="@dimen/fonte_16"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="@dimen/borda_20"
+                app:layout_constraintTop_toBottomOf="@id/txt_regra6_conteudo"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/txt_regra7_conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/regra7_conteudo"
+                android:textSize="@dimen/fonte_16"
+                android:textColor="@color/black"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginBottom="20dp"
                 android:layout_marginEnd="@dimen/borda_20"
-                app:layout_constraintTop_toBottomOf="@id/txt_regra6"
+                app:layout_constraintTop_toBottomOf="@id/txt_regra7"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 />
@@ -208,16 +276,21 @@
 
     </ScrollView>
 
+    <!-- Voltar para a tela inicial -->
     <Button
         android:id="@+id/btn_regras_voltar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/voltar_tela_inicial"
-        android:textSize="@dimen/font_pequena"
+        android:textSize="@dimen/fonte_16"
+        android:textColor="@color/purple"
         app:cornerRadius="0dp"
         android:paddingStart="50dp"
         android:paddingEnd="50dp"
         android:layout_marginBottom="50dp"
+        android:backgroundTint="@color/light_gray"
+        app:strokeColor="@color/purple"
+        app:strokeWidth="1dp"
         app:layout_constraintTop_toBottomOf="@+id/scroll_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
