@@ -5,7 +5,25 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
     tools:context=".Resultado">
+
+    <!-- Ondas no fundo da tela -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="470dp"
+        android:background="@drawable/wavetop"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@drawable/wavebottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Título -->
     <TextView
@@ -14,7 +32,7 @@
         android:layout_height="wrap_content"
         android:text="@string/resultado"
         android:textSize="@dimen/fonte_64"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:layout_marginTop="50dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +47,7 @@
         android:layout_height="wrap_content"
         android:text="@string/resultado"
         android:textSize="@dimen/fonte_30"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="50dp"
         app:layout_constraintTop_toBottomOf="@id/txt_titulo_resultado"
@@ -44,7 +62,7 @@
         android:layout_height="wrap_content"
         android:text="@string/placar"
         android:textSize="@dimen/fonte_44"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:layout_marginTop="30dp"
         app:layout_constraintTop_toBottomOf="@id/txt_resultado"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,12 +76,16 @@
         android:layout_height="wrap_content"
         android:text="@string/reiniciar"
         android:textSize="@dimen/fonte_16"
+        android:textColor="@color/purple"
         app:cornerRadius="0dp"
         android:paddingStart="30dp"
         android:paddingEnd="30dp"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
         android:layout_marginBottom="50dp"
+        android:backgroundTint="@color/light_gray"
+        app:strokeColor="@color/purple"
+        app:strokeWidth="1dp"
         app:layout_constraintTop_toBottomOf="@id/txt_placar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,12 +99,16 @@
         android:layout_height="wrap_content"
         android:text="@string/voltar_tela_inicial"
         android:textSize="@dimen/fonte_16"
+        android:textColor="@color/purple"
         app:cornerRadius="0dp"
         android:paddingStart="30dp"
         android:paddingEnd="30dp"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
         android:layout_marginBottom="50dp"
+        android:backgroundTint="@color/light_gray"
+        app:strokeColor="@color/purple"
+        app:strokeWidth="1dp"
         app:layout_constraintTop_toBottomOf="@id/txt_placar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/btn_reiniciar"

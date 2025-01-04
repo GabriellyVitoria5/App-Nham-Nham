@@ -220,9 +220,11 @@ class Jogo : AppCompatActivity() {
     private fun mostrarJogadorAtual(){
         if (controleVezJogador){
             binding.txtVezJogador.text = "Vez do Jogador 1"
+            binding.txtVezJogador.setTextColor(getColor(R.color.red))
         }
         else{
             binding.txtVezJogador.text = "Vez do Jogador 2"
+            binding.txtVezJogador.setTextColor(getColor(R.color.blue))
         }
     }
 
